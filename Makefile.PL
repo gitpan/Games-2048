@@ -18,7 +18,9 @@ resources (
 		url => 'git://github.com/Blaizer/Games-2048.git',
 		web => 'https://github.com/Blaizer/Games-2048',
 	},
-	bugtracker => 'https://github.com/Blaizer/Games-2048/issues',
+	bugtracker => {
+		url => 'https://github.com/Blaizer/Games-2048/issues',
+	},
 );
 
 configure_requires (
@@ -31,11 +33,11 @@ test_requires (
 );
 
 requires (
-	'Term::ReadKey'  => 0,
-	'Moo'            => 0,
-	'strictures'     => 0,
-	'File::ShareDir' => 0,
-	('Win32::Console::ANSI' => 0) x ($^O eq 'MSWin32'),
+	'Term::ReadKey'  => 2.30,
+	'Moo'            => 1.004,
+	'strictures'     => 1.005,
+	'File::ShareDir' => 1.00,
+	('Win32::Console::ANSI' => 1.07) x ($^O eq 'MSWin32'),
 );
 
 install_script (

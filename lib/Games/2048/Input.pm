@@ -14,14 +14,14 @@ ReadMode 4; # turn off control keys
 
 # manual and automatic window size updating
 my $_window_size;
-$SIG{WINCH} = \&update_window_size;
+eval { $SIG{WINCH} = \&update_window_size };
 &update_window_size;
 
 sub read_key {
-	state @keys;
+	state $keys = [];
 
-	if (@keys) {
-		return shift @keys;
+	if (@$keys) {
+		return shift @$keys;
 	}
 
 	my $char;
@@ -40,10 +40,10 @@ sub read_key {
 			.              # Otherwise just any character
 		)
 	)gsx) {
-		push @keys, $1;
+		push @$keys, $1;
 	}
 
-	return shift @keys;
+	return shift @$keys;
 }
 
 sub poll_key {
