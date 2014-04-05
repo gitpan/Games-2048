@@ -1,0 +1,34 @@
+---
+abstract: 'An ASCII clone of the 2048 game'
+author:
+  - 'Blaise Roth <blaizer@cpan.org>'
+build_requires:
+  ExtUtils::MakeMaker: 6.59
+configure_requires:
+  ExtUtils::MakeMaker: 6.59
+distribution_type: module
+dynamic_config: 1
+generated_by: 'Module::Install version 1.08'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Games-2048
+no_index:
+  directory:
+    - inc
+    - t
+requires:
+  File::ShareDir: 0
+  Moo: 0
+  Term::ReadKey: 0
+  perl: '5.01'
+  strictures: 0
+resources:
+  bugtracker: https://github.com/Blaizer/Games-2048/issues
+  license: http://dev.perl.org/licenses/
+  repository:
+    type: git
+    url: git://github.com/Blaizer/Games-2048.git
+    web: https://github.com/Blaizer/Games-2048
+version: '0.02'
