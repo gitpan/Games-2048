@@ -19,10 +19,11 @@ no_index:
     - inc
     - t
 requires:
+  Color::ANSI::Util: 0.03
   File::ShareDir: 1
   Moo: 1.004
-  Term::ReadKey: 2.3
-  perl: '5.01'
+  Term::ReadKey: 2.31
+  perl: 5.12.0
   strictures: 1.005
 resources:
   bugtracker:
@@ -32,4 +33,4 @@ resources:
     type: git
     url: git://github.com/Blaizer/Games-2048.git
     web: https://github.com/Blaizer/Games-2048
-version: '0.03'
+version: '0.04'

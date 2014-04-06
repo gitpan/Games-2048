@@ -31,10 +31,10 @@ See L<http://dev.perl.org/licenses/> for more information.
 =cut
 
 package Games::2048;
-use 5.01;
+use 5.012;
 use Moo;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 use Storable;
 use File::ShareDir;
@@ -100,7 +100,7 @@ sub run {
 					if ($vec) {
 						$game->move($vec);
 					}
-					elsif ($key =~ /^[q\cC]$/i) {
+					elsif ($key =~ /^[q]$/i) {
 						$quit = 1;
 						last PLAY;
 					}
@@ -135,13 +135,13 @@ sub run {
 			print $game->win ? "Keep going?" : "Try again?", " (Y/n) ";
 			{
 				my $key = Games::2048::Input::poll_key;
-				if ($key =~ /^[yn ]$/i) {
+				if ($key =~ /^[yn]$/i) {
 					print $key;
 				}
-				if ($key =~ /^[nq\cC]$/i) {
+				if ($key =~ /^[nq]$/i) {
 					$quit = 1;
 				}
-				elsif ($key =~ /^[yr\r\n ]$/i) {
+				elsif ($key =~ /^[yr\n]$/i) {
 					say "";
 				}
 				else {
