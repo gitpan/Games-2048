@@ -24,7 +24,7 @@ use constant {
 	CELL_WIDTH => 7,
 	CELL_HEIGHT => 3,
 
-	SCORE_INNER_PADDING => 2,
+	SCORE_WIDTH => 7,
 };
 
 sub insert_tile {
@@ -44,6 +44,8 @@ sub draw {
 	my ($self, $redraw) = @_;
 
 	return if $redraw and !$self->needs_redraw;
+
+	$self->hide_cursor;
 	$self->restore_cursor if $redraw;
 	$self->needs_redraw(0);
 
@@ -131,6 +133,7 @@ sub draw {
 	}
 
 	$self->draw_border_horizontal;
+	$self->show_cursor if !$self->needs_redraw;
 }
 
 sub draw_win {
@@ -148,10 +151,10 @@ sub draw_score {
 	my ($self) = @_;
 
 	my $score = "Score:";
-	my $best_score = "Best score:";
+	my $best_score = "Best:";
 
 	my $blank_width = $self->board_width - length($score) - length($best_score);
-	my $score_width = floor(($blank_width - SCORE_INNER_PADDING) / 2);
+	my $score_width = min(floor(($blank_width - 1) / 2), SCORE_WIDTH);
 	my $inner_padding = $blank_width - $score_width * 2;
 
 	$self->draw_sub_score($score, $score_width, $self->score);
@@ -172,7 +175,7 @@ sub tile_color {
 	my ($self, $value) = @_;
     if ($ENV{KONSOLE_DBUS_SERVICE}) {
         return
-		!defined $value    ? ansifg("776E65") . ansibg("CCC0B3")
+		!defined $value    ? ansifg("BBADA0") . ansibg("CCC0B3")
 		: $value < 4       ? ansifg("776E65") . ansibg("EEE4DA")
 		: $value < 8       ? ansifg("776E65") . ansibg("EDE0C8")
 		: $value < 16      ? ansifg("F9F6F2") . ansibg("F2B179")
@@ -202,7 +205,7 @@ sub tile_color {
 
 sub border_color {
 	$ENV{KONSOLE_DBUS_SERVICE}
-		? ansifg("776E65") . ansibg("BBADA0")
+		? ansifg("CCC0B3") . ansibg("BBADA0")
 		: color("reverse");
 }
 
@@ -247,6 +250,16 @@ MESSAGE
 	$message =~ s/(^2048|How to play:|arrow keys|merge into one!|Quit:|New Game:)/colored $1, "bold"/ge;
 
 	say $message;
+}
+
+sub hide_cursor {
+	my $self = shift;
+	eval 'END { $self->show_cursor }';
+	print "\e[?25l";
+}
+sub show_cursor {
+	my $self = shift;
+	print "\e[?25h";
 }
 
 1;

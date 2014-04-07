@@ -2,9 +2,17 @@ package Games::2048::Game;
 use 5.012;
 use Moo;
 
+# increment this whenever we break compat with older game objects
+our $VERSION = '0.01';
+
+use Storable;
+use File::Spec::Functions;
+use File::HomeDir;
+
 extends 'Games::2048::Board';
 
-has won => is => 'rw', default => 0;
+has won     => is => 'rw', default => 0;
+has version => is => 'rw', default => __PACKAGE__->VERSION;
 
 sub insert_start_tiles {
 	my ($self, $start_tiles) = @_;
@@ -88,6 +96,28 @@ sub has_moves_remaining {
 		}
 	}
 	return;
+}
+
+sub _game_file {
+	state $config_dir = eval { File::HomeDir->my_dist_config("Games-2048", {create => 1}) };
+	return if !defined $config_dir;
+	return catfile($config_dir, "game.dat");
+}
+
+sub save {
+	my $self = shift;
+	$self->version(__PACKAGE__->VERSION);
+	eval { store($self, _game_file); 1 };
+}
+
+sub restore {
+	my $self = eval { retrieve(_game_file) };
+	$self;
+}
+
+sub is_valid {
+	my $self = shift;
+	defined $self->version and $self->version >= __PACKAGE__->VERSION;
 }
 
 1;

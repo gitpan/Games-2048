@@ -12,6 +12,9 @@ isa_ok $game, "Games::2048::Grid", "game";
 isa_ok $small_game, "Games::2048::Grid", "small_game";
 isa_ok $big_game, "Games::2048::Grid", "big_game";
 
+ok $game->version, "Game version isn't 0";
+ok $game->is_valid, "Game is valid";
+
 sub create_game {
 	my %options = @_;
 	my $tiles = delete $options{tiles};

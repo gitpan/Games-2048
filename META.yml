@@ -20,7 +20,7 @@ no_index:
     - t
 requires:
   Color::ANSI::Util: 0.03
-  File::ShareDir: 1
+  File::HomeDir: 1
   Moo: 1.004
   Term::ReadKey: 2.31
   perl: 5.12.0
@@ -33,4 +33,4 @@ resources:
     type: git
     url: git://github.com/Blaizer/Games-2048.git
     web: https://github.com/Blaizer/Games-2048
-version: '0.04'
+version: '0.05'
