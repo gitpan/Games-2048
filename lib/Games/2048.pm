@@ -52,7 +52,7 @@ package Games::2048;
 use 5.012;
 use Moo;
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 use Time::HiRes;
 
@@ -77,6 +77,7 @@ sub run {
 	my $quit;
 	my $game;
 	my $first_time = 1;
+	Games::2048::Input::update_window_size;
 
 	while (!$quit) {
 		if ($first_time and $game = Games::2048::Game->restore) {
@@ -144,6 +145,7 @@ sub run {
 
 		if (!$quit and !$restart) {
 			print $game->win ? "Keep going?" : "Try again?", " (Y/n) ";
+			STDOUT->flush;
 			{
 				my $key = Games::2048::Input::poll_key;
 				if ($key =~ /^[yn]$/i) {

@@ -4,9 +4,12 @@ use Moo;
 
 use Text::Wrap;
 use Term::ANSIColor;
-use Color::ANSI::Util qw/ansifg ansibg/;
 use POSIX qw/floor ceil/;
 use List::Util qw/max min/;
+BEGIN {
+	eval { require Color::ANSI::Util; 1 }
+		and Color::ANSI::Util->import(qw/ansifg ansibg/);
+}
 
 extends 'Games::2048::Grid';
 
@@ -173,7 +176,9 @@ sub draw_sub_score {
 
 sub tile_color {
 	my ($self, $value) = @_;
-    if ($ENV{KONSOLE_DBUS_SERVICE}) {
+	state $use_color_util = $ENV{KONSOLE_DBUS_SERVICE}
+		&& exists &ansifg && exists &ansibg;
+    if ($use_color_util) {
         return
 		!defined $value    ? ansifg("BBADA0") . ansibg("CCC0B3")
 		: $value < 4       ? ansifg("776E65") . ansibg("EEE4DA")
@@ -189,7 +194,8 @@ sub tile_color {
 		: $value < 4096    ? ansifg("F9F6F2") . ansibg("EDC22E") . color("bold")
 		                   : ansifg("F9F6F2") . ansibg("3C3A32") . color("bold");
 	}
-	my $bright = $^O eq "MSWin32" ? "bold " : "bright_";
+	my $bright = $^O eq "MSWin32" ? "underline " : "bright_";
+	my $bold = $^O eq "MSWin32" ? "underline" : "bold";
 	return color (
 		!defined $value    ? "reset"
 		: $value < 4       ? "reverse cyan"
@@ -199,7 +205,7 @@ sub tile_color {
 		: $value < 64      ? "reverse magenta"
 		: $value < 128     ? "reverse red"
 		: $value < 4096    ? "reverse yellow"
-		                   : "reverse bold"
+		                   : "reverse $bold"
 	);
 }
 
