@@ -33,4 +33,4 @@ resources:
     type: git
     url: git://github.com/Blaizer/Games-2048.git
     web: https://github.com/Blaizer/Games-2048
-version: '0.07'
+version: '0.08'
